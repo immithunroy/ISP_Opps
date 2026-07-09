@@ -39,8 +39,8 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: ./docker/backend/Dockerfile
+      context: .
+      dockerfile: docker/backend/Dockerfile
     container_name: isp-backend
     restart: unless-stopped
     environment:
@@ -82,8 +82,8 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: ./docker/frontend/Dockerfile
+      context: .
+      dockerfile: docker/frontend/Dockerfile
       args:
         VITE_API_URL: ${VITE_API_URL:-/api/v1}
     container_name: isp-frontend

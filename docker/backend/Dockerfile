@@ -7,24 +7,25 @@ RUN apk add --no-cache python3 make g++
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY backend/package*.json ./
+
+# Install dependencies
+RUN npm ci
 
 # Development stage
 FROM base AS development
 ENV NODE_ENV=development
-RUN npm ci
-COPY . .
+COPY backend/ .
 EXPOSE 3000
 CMD ["npm", "run", "dev"]
 
 # Builder stage
 FROM base AS builder
 ENV NODE_ENV=production
-RUN npm ci
-COPY . .
+COPY backend/ .
 RUN npm run build
 
-# Production stage
+# Production stage - use a fresh copy of Node
 FROM node:20-alpine AS production
 ENV NODE_ENV=production
 
@@ -35,9 +36,9 @@ RUN addgroup -g 1001 -S nodejs && \
 WORKDIR /app
 
 # Copy built files
-COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
-COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nodejs:nodejs /app/package.json ./
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
 
 # Create uploads directory
 RUN mkdir -p uploads/{assets,employees,attendance,splices,tjboxes,splitters,fiber,maintenance} && \

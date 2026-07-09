@@ -4,21 +4,22 @@ FROM node:20-alpine AS base
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY frontend/package*.json ./
+
+# Install dependencies
+RUN npm ci
 
 # Development stage
 FROM base AS development
 ENV NODE_ENV=development
-RUN npm ci
-COPY . .
+COPY frontend/ .
 EXPOSE 5173
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
 
 # Builder stage
 FROM base AS builder
 ENV NODE_ENV=production
-RUN npm ci
-COPY . .
+COPY frontend/ .
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
