@@ -247,3 +247,6 @@ export const notificationService = {
   markAllRead: () => apiService.getClient().patch('/notifications/read-all'),
   getUnreadCount: () => apiService.getClient().get('/notifications/unread-count'),
 };
+
+// Export axios instance for direct use
+export const api = apiService.getClient();

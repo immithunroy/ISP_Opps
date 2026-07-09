@@ -44,33 +44,35 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        
-        <Route element={
-          <ProtectedRoute>
-            <Layout />
-          </ProtectedRoute>
-        }>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/employees" element={<Employees />} />
-          <Route path="/attendance" element={<Attendance />} />
-          <Route path="/assets" element={<Assets />} />
-          <Route path="/fiber" element={<FiberRoutes />} />
-          <Route path="/splitters" element={<Splitters />} />
-          <Route path="/splices" element={<Splices />} />
-          <Route path="/tjboxes" element={<TJBoxes />} />
-          <Route path="/maintenance" element={<Maintenance />} />
-          <Route path="/map" element={<MapView />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/admin" element={<AdminPanel />} roles={['SUPER_ADMIN', 'ADMINISTRATOR']} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/profile" element={<Profile />} />
-        </Route>
+      <Suspense fallback={<LoadingSpinner fullScreen />}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          
+          <Route element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/employees" element={<Employees />} />
+            <Route path="/attendance" element={<Attendance />} />
+            <Route path="/assets" element={<Assets />} />
+            <Route path="/fiber" element={<FiberRoutes />} />
+            <Route path="/splitters" element={<Splitters />} />
+            <Route path="/splices" element={<Splices />} />
+            <Route path="/tjboxes" element={<TJBoxes />} />
+            <Route path="/maintenance" element={<Maintenance />} />
+            <Route path="/map" element={<MapView />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/admin" element={<AdminPanel />} roles={['SUPER_ADMIN', 'ADMINISTRATOR']} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
 
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 };
