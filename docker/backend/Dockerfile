@@ -7,7 +7,7 @@ WORKDIR /app
 COPY backend/package*.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Development stage
 FROM base AS development
